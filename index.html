@@ -4,32 +4,187 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kenny | Portfolio</title>
+    <title>Kenny — Solutions Engineer & Developer</title>
+    <meta name="description" content="Kenny — Solutions Engineer in Lagos, building web apps one project at a time.">
+
+    <!-- Fonts: a serif for headlines, a sans for reading, a mono for labels -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,700;1,9..144,300;1,9..144,500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <header>
-        <h1>Kenny</h1>
-        <nav>
+
+    <!-- Thin red bar at the top that fills as you scroll -->
+    <div class="progress" aria-hidden="true"></div>
+
+    <header class="site-header">
+        <a href="#top" class="logo">K<span>.</span></a>
+
+        <button class="menu-toggle" aria-label="Open menu" aria-expanded="false">
+            <span></span><span></span>
+        </button>
+
+        <nav class="nav">
             <a href="#about">About</a>
+            <a href="#work">Work</a>
             <a href="#projects">Projects</a>
             <a href="#contact">Contact</a>
         </nav>
     </header>
 
-    <section id="about">
-        <h2>About Me</h2>
-        <p>Sales & Solutions Engineer learning to build software.</p>
-    </section>
+    <main id="top">
 
-    <section id="projects">
-        <h2>Projects</h2>
-    </section>
+        <!-- ============ HERO ============ -->
+        <section class="hero">
+            <p class="eyebrow mono">
+                <span class="dot"></span>Lagos, Nigeria · <span id="clock">--:--</span> WAT
+            </p>
 
-    <section id="contact">
-        <h2>Contact</h2>
-    </section>
+            <h1 class="hero-title">
+                <span class="line"><span>I connect</span></span>
+                <span class="line"><span><em>business</em> problems</span></span>
+                <span class="line"><span>to working software.</span></span>
+            </h1>
+
+            <!-- The barcode is drawn by script.js: it encodes the text "KENNY.DEV" in binary -->
+            <div class="barcode-wrap">
+                <div class="barcode" id="barcode" aria-hidden="true"></div>
+                <div class="laser" aria-hidden="true"></div>
+                <p class="barcode-label mono">Kenny.dev — Solutions Engineer / Developer</p>
+            </div>
+
+            <a href="#about" class="scroll-cue mono">Scroll <span>↓</span></a>
+        </section>
+
+        <!-- ============ MARQUEE (scrolling skills strip) ============ -->
+        <div class="marquee" aria-hidden="true">
+            <div class="marquee-track">
+                <span>JavaScript</span>
+                <span>HTML &amp; CSS</span>
+                <span>Node.js</span>
+                <span>AI Solutions</span>
+                <span>Solution Design</span>
+                <span>React — next</span>
+                <span>TypeScript — soon</span>
+            </div>
+        </div>
+
+        <!-- ============ ABOUT ============ -->
+        <section id="about" class="section">
+            <p class="section-num mono">01 / About</p>
+
+            <div class="about-grid">
+                <h2 class="big reveal">
+                    A sales engineer who got curious about <em>how it's built</em> — and started building.
+                </h2>
+
+                <div class="about-text">
+                    <p class="reveal" style="--d:.1s">
+                        I'm a Regional Sales &amp; Solutions Engineer covering West and Central Africa.
+                        My day job is understanding how businesses work and showing them what technology —
+                        including AI — can do for them.
+                    </p>
+                    <p class="reveal" style="--d:.2s">
+                        Now I'm learning to build that technology myself: sixty web apps, one at a time,
+                        from simple tools to full platforms.
+                    </p>
+
+                    <ul class="stats reveal" style="--d:.3s">
+                        <li><strong data-count="2">0</strong><span>Regions covered</span></li>
+                        <li><strong data-count="2">0</strong><span>Projects shipped</span></li>
+                        <li><strong data-count="60">0</strong><span>Apps on the roadmap</span></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ WORK / WHAT I DO ============ -->
+        <section id="work" class="section">
+            <p class="section-num mono">02 / What I do</p>
+
+            <ul class="services">
+                <li class="service reveal">
+                    <span class="service-index mono">(01)</span>
+                    <h3>Solutions Engineering</h3>
+                    <p>Turning real operational problems into technology solutions customers can actually deploy.</p>
+                </li>
+                <li class="service reveal">
+                    <span class="service-index mono">(02)</span>
+                    <h3>AI Demos &amp; Enablement</h3>
+                    <p>Showing teams what AI can do for their business — with live demos, not slides.</p>
+                </li>
+                <li class="service reveal">
+                    <span class="service-index mono">(03)</span>
+                    <h3>Web Development</h3>
+                    <p>Building web apps in JavaScript, from front-end interfaces to Node.js back ends.</p>
+                </li>
+            </ul>
+        </section>
+
+        <!-- ============ PROJECTS ============ -->
+        <section id="projects" class="section">
+            <p class="section-num mono">03 / Selected projects</p>
+
+            <div class="projects">
+                <a class="project reveal" href="https://github.com/iamkenny-dev/shortly" target="_blank" rel="noopener">
+                    <div class="project-top mono"><span>01</span><span class="arrow">↗</span></div>
+                    <div class="project-visual mono"><span>sho.rt/<b>x7Ka</b></span></div>
+                    <h3>Shortly</h3>
+                    <p>A URL shortener that turns long links into short ones.</p>
+                    <ul class="tags mono">
+                        <li>Node.js</li>
+                        <li>Express</li>
+                    </ul>
+                </a>
+
+                <a class="project reveal" style="--d:.1s" href="#top">
+                    <div class="project-top mono"><span>02</span><span class="arrow">↗</span></div>
+                    <div class="project-visual mono"><span>Day <b>01</b>/60</span></div>
+                    <h3>This Portfolio</h3>
+                    <p>Hand-built with HTML, CSS and vanilla JavaScript. No frameworks.</p>
+                    <ul class="tags mono">
+                        <li>HTML</li>
+                        <li>CSS</li>
+                        <li>JavaScript</li>
+                    </ul>
+                </a>
+
+                <div class="project ghost reveal" style="--d:.2s">
+                    <div class="project-top mono"><span>03—60</span><span>…</span></div>
+                    <div class="project-visual mono"><span>loading<b class="blink">_</b></span></div>
+                    <h3>More on the way</h3>
+                    <p>A new app ships every day or two. Check back soon.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ CONTACT ============ -->
+        <section id="contact" class="section contact">
+            <p class="section-num mono">04 / Contact</p>
+
+            <h2 class="contact-title reveal">Let's build<br><em>something.</em></h2>
+
+            <button class="email-btn magnetic reveal" data-email="hello@example.com">
+                <span class="email-label">hello@example.com</span>
+                <span class="email-hint">Click to copy</span>
+            </button>
+
+            <ul class="socials mono reveal">
+                <li><a href="https://github.com/iamkenny-dev" target="_blank" rel="noopener">GitHub ↗</a></li>
+                <li><a href="#" target="_blank" rel="noopener">LinkedIn ↗</a></li>
+            </ul>
+        </section>
+    </main>
+
+    <footer class="footer mono">
+        <span>© <span id="year"></span> Kenny</span>
+        <span>Built by hand · Day 1 of 60</span>
+    </footer>
 
     <script src="script.js"></script>
 </body>
