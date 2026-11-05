@@ -1,0 +1,506 @@
+/* =====================================================
+   1. DESIGN TOKENS
+   Variables = one place to change colours/fonts for the whole site.
+   ===================================================== */
+:root {
+  --paper: #F3EFE6;   /* warm off-white background */
+  --ink:   #141414;   /* near-black text */
+  --muted: #6B675F;   /* grey for secondary text */
+  --line:  #D9D3C7;   /* thin dividers */
+  --laser: #E8432E;   /* scanner-laser red: our ONE accent colour */
+
+  --serif: 'Fraunces', Georgia, serif;
+  --sans:  'Inter', system-ui, sans-serif;
+  --mono:  'JetBrains Mono', ui-monospace, monospace;
+
+  --pad: clamp(20px, 5vw, 64px);          /* side spacing that grows with screen */
+  --ease: cubic-bezier(.2, .8, .2, 1);     /* smooth "settle" motion curve */
+}
+
+/* =====================================================
+   2. RESET + BASE
+   ===================================================== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }   /* <- smooth scrolling for menu links */
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* Film-grain texture over the whole page — makes it feel printed, not "flat digital" */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 100;
+  opacity: .06;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+::selection { background: var(--laser); color: var(--paper); }
+a { color: inherit; text-decoration: none; }
+ul { list-style: none; }
+
+.mono {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+/* =====================================================
+   3. SCROLL PROGRESS BAR
+   ===================================================== */
+.progress {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  height: 3px;
+  background: var(--laser);
+  transform-origin: left;
+  transform: scaleX(0);   /* script.js changes this from 0 to 1 */
+  z-index: 60;
+}
+
+/* =====================================================
+   4. HEADER + NAV
+   ===================================================== */
+.site-header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px var(--pad);
+  z-index: 50;
+  transition: transform .4s var(--ease), background .3s;
+}
+.site-header.scrolled {
+  background: rgba(243, 239, 230, .85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--line);
+}
+.site-header.hidden { transform: translateY(-100%); }   /* hides when scrolling down */
+
+.logo { font-family: var(--serif); font-size: 28px; font-weight: 700; line-height: 1; }
+.logo span { color: var(--laser); }
+
+.nav { display: flex; gap: 32px; }
+.nav a {
+  position: relative;
+  padding: 4px 0;
+  font-family: var(--mono);
+  font-size: 13px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+/* Underline that draws in from the left on hover */
+.nav a::after {
+  content: "";
+  position: absolute;
+  left: 0; bottom: 0;
+  width: 100%; height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform .35s var(--ease);
+}
+.nav a:hover::after,
+.nav a.active::after { transform: scaleX(1); transform-origin: left; }
+.nav a.active { color: var(--laser); }
+
+.menu-toggle { display: none; }   /* only shown on phones (see bottom) */
+
+/* =====================================================
+   5. HERO
+   ===================================================== */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 140px var(--pad) 80px;
+}
+
+.eyebrow { color: var(--muted); margin-bottom: 28px; }
+.dot {
+  display: inline-block;
+  vertical-align: middle;
+  width: 8px; height: 8px;
+  margin-right: 10px;
+  border-radius: 50%;
+  background: #2E9E5B;
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(46, 158, 91, .6); }
+  100% { box-shadow: 0 0 0 10px rgba(46, 158, 91, 0); }
+}
+
+.hero-title {
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: clamp(44px, 8.5vw, 128px);
+  line-height: .98;
+  letter-spacing: -.03em;
+}
+.hero-title em { font-style: italic; font-weight: 500; color: var(--laser); }
+
+/* Each line slides up from behind an invisible "mask" */
+.line { display: block; overflow: hidden; padding-bottom: .06em; }
+.line > span {
+  display: inline-block;
+  transform: translateY(110%);
+  animation: rise 1.1s var(--ease) forwards;
+}
+.line:nth-child(2) > span { animation-delay: .12s; }
+.line:nth-child(3) > span { animation-delay: .24s; }
+@keyframes rise { to { transform: translateY(0); } }
+
+/* --- Barcode + laser graphic --- */
+.barcode-wrap {
+  position: relative;
+  width: min(520px, 100%);
+  margin-top: 56px;
+}
+.barcode { display: flex; height: 88px; }
+.barcode span {
+  display: block;
+  height: 100%;
+  background: var(--ink);
+  transform: scaleY(0);
+  transform-origin: bottom;
+  animation: grow .6s var(--ease) forwards;   /* each bar grows up; delay set in JS */
+}
+.barcode span.gap { background: transparent; }
+@keyframes grow { to { transform: scaleY(1); } }
+
+.laser {
+  position: absolute;
+  top: 0;
+  left: -4%; right: -4%;
+  height: 2px;
+  background: var(--laser);
+  box-shadow: 0 0 14px 2px rgba(232, 67, 46, .7);
+  opacity: 0;
+  animation: scan 2.6s ease-in-out 1.4s infinite alternate, fade-in .4s 1.4s forwards;
+}
+@keyframes scan    { from { transform: translateY(0); } to { transform: translateY(86px); } }
+@keyframes fade-in { to { opacity: 1; } }
+
+.barcode-label { margin-top: 12px; color: var(--muted); font-size: 11px; letter-spacing: .25em; }
+
+.scroll-cue {
+  position: absolute;
+  right: var(--pad);
+  bottom: 32px;
+  color: var(--muted);
+}
+.scroll-cue span { display: inline-block; animation: bob 1.6s ease-in-out infinite; }
+@keyframes bob { 50% { transform: translateY(5px); } }
+
+/* =====================================================
+   6. MARQUEE
+   ===================================================== */
+.marquee {
+  overflow: hidden;
+  padding: 18px 0;
+  background: var(--ink);
+  color: var(--paper);
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 35s linear infinite;
+}
+.marquee span {
+  display: flex;
+  align-items: center;
+  padding-right: 48px;
+  white-space: nowrap;
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(24px, 3vw, 40px);
+}
+.marquee span::after {
+  content: "✦";
+  margin-left: 48px;
+  color: var(--laser);
+  font-style: normal;
+  font-size: .5em;
+}
+/* JS duplicates the words, so moving -50% loops seamlessly */
+@keyframes marquee { to { transform: translateX(-50%); } }
+
+/* =====================================================
+   7. SECTIONS (shared)
+   ===================================================== */
+.section {
+  padding: clamp(90px, 12vw, 160px) var(--pad);
+  scroll-margin-top: 40px;   /* so the header doesn't cover the heading */
+}
+.section-num {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 48px;
+  color: var(--laser);
+}
+.section-num::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+
+.big {
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: clamp(32px, 4.5vw, 60px);
+  line-height: 1.08;
+  letter-spacing: -.02em;
+}
+.big em { font-style: italic; color: var(--laser); }
+
+/* --- About --- */
+.about-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: clamp(40px, 6vw, 96px);
+  align-items: start;
+}
+.about-text p { max-width: 46ch; margin-bottom: 20px; color: var(--muted); }
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin-top: 40px;
+  border-top: 1px solid var(--ink);
+}
+.stats li { padding-top: 20px; }
+.stats strong {
+  display: block;
+  font-family: var(--serif);
+  font-size: 52px;
+  font-weight: 500;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+.stats span { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+
+/* --- Work / services --- */
+.services { border-top: 1px solid var(--ink); }
+.service {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: 80px 1fr 1.2fr;
+  gap: 24px;
+  align-items: baseline;
+  padding: 40px 0;
+  border-bottom: 1px solid var(--line);
+  transition: color .4s, padding .5s var(--ease);
+}
+/* Dark panel that wipes up behind the row on hover */
+.service::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--ink);
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform .5s var(--ease);
+}
+.service:hover { color: var(--paper); padding-left: 24px; padding-right: 24px; }
+.service:hover::before { transform: scaleY(1); }
+.service-index { color: var(--laser); }
+.service h3 { font-family: var(--serif); font-weight: 500; font-size: clamp(26px, 3vw, 38px); line-height: 1.1; }
+.service p { color: var(--muted); transition: color .4s; }
+.service:hover p { color: #BDB7AB; }
+
+/* --- Projects --- */
+.projects {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+.project {
+  display: flex;
+  flex-direction: column;
+  min-height: 380px;
+  padding: 28px;
+  border: 1px solid var(--ink);
+  background: var(--paper);
+  transition: transform .4s var(--ease), box-shadow .4s var(--ease);
+}
+/* Hard offset shadow — a print/poster feel instead of soft blurry shadows */
+a.project:hover { transform: translate(-6px, -6px); box-shadow: 6px 6px 0 var(--ink); }
+
+.project-top { display: flex; justify-content: space-between; color: var(--muted); }
+.arrow { display: inline-block; font-size: 18px; transition: transform .4s var(--ease), color .3s; }
+a.project:hover .arrow { transform: rotate(45deg); color: var(--laser); }
+
+.project-visual {
+  flex: 1;
+  display: grid;
+  place-items: center;
+  margin: 24px 0;
+  min-height: 140px;
+  font-size: clamp(18px, 2vw, 24px);
+  text-transform: none;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 23px, var(--line) 23px 24px),
+    repeating-linear-gradient(0deg,  transparent 0 23px, var(--line) 23px 24px);  /* graph paper */
+}
+.project-visual b { color: var(--laser); font-weight: 500; }
+
+.project h3 { font-family: var(--serif); font-weight: 500; font-size: 30px; line-height: 1.1; margin-bottom: 8px; }
+.project p { color: var(--muted); font-size: 15px; }
+.tags { display: flex; gap: 8px; margin-top: 18px; flex-wrap: wrap; }
+.tags li { padding: 4px 10px; border: 1px solid var(--line); border-radius: 999px; font-size: 10px; }
+
+.project.ghost { border-style: dashed; color: var(--muted); }
+.project.ghost h3 { color: var(--ink); }
+.blink { animation: blink 1s steps(1) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+
+/* --- Contact --- */
+.contact { background: var(--ink); color: var(--paper); }
+.contact .section-num::after { background: #333; }
+.contact-title {
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: clamp(52px, 11vw, 160px);
+  line-height: .95;
+  letter-spacing: -.03em;
+}
+.contact-title em { color: var(--laser); }
+
+.email-btn {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  margin-top: 56px;
+  padding: 22px 36px;
+  border: 1px solid var(--paper);
+  border-radius: 999px;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  font-family: var(--mono);
+  transition: background .3s, border-color .3s, transform .3s var(--ease);
+}
+.email-btn:hover { background: var(--laser); border-color: var(--laser); }
+.email-label { font-size: clamp(15px, 2vw, 20px); }
+.email-hint { font-size: 10px; letter-spacing: .15em; text-transform: uppercase; opacity: .6; }
+
+.socials { display: flex; gap: 32px; margin-top: 64px; }
+.socials a { border-bottom: 1px solid transparent; transition: border-color .3s, color .3s; }
+.socials a:hover { color: var(--laser); border-color: var(--laser); }
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 24px var(--pad);
+  background: var(--ink);
+  color: #8A857C;
+  border-top: 1px solid #2A2A2A;
+}
+
+/* =====================================================
+   8. SCROLL REVEAL
+   Elements start hidden; script.js adds .is-visible when they enter the screen.
+   ===================================================== */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity .9s ease, transform .9s var(--ease);
+  transition-delay: var(--d, 0s);   /* the style="--d:.1s" in HTML staggers them */
+}
+.reveal.is-visible { opacity: 1; transform: none; }
+/* The services rows need their hover transitions too, so combine them */
+.service.reveal { transition: opacity .9s ease, transform .9s var(--ease), color .4s, padding .5s var(--ease); }
+
+/* =====================================================
+   9. TABLET + PHONE
+   ===================================================== */
+@media (max-width: 960px) {
+  .projects { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 760px) {
+  .about-grid { grid-template-columns: 1fr; }
+  .service { grid-template-columns: 1fr; gap: 8px; padding: 32px 0; }
+  .projects { grid-template-columns: 1fr; }
+  .project { min-height: 320px; }
+  .stats strong { font-size: 40px; }
+  .scroll-cue { display: none; }
+  .footer { flex-direction: column; }
+
+  /* Hamburger button */
+  .menu-toggle {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 8px;
+    background: none;
+    border: 0;
+    cursor: pointer;
+    z-index: 70;
+  }
+  .menu-toggle span { width: 26px; height: 2px; background: var(--ink); transition: transform .3s, background .3s; }
+  .menu-open .menu-toggle span { background: var(--paper); }
+  .menu-open .menu-toggle span:first-child { transform: translateY(4px) rotate(45deg); }
+  .menu-open .menu-toggle span:last-child  { transform: translateY(-4px) rotate(-45deg); }
+
+  /* Full-screen menu that opens as a growing circle from the button */
+  .nav {
+    position: fixed;
+    inset: 0;
+    z-index: 65;
+    flex-direction: column;
+    justify-content: center;
+    gap: 8px;
+    padding: var(--pad);
+    background: var(--ink);
+    clip-path: circle(0% at calc(100% - 44px) 40px);
+    transition: clip-path .7s cubic-bezier(.7, 0, .2, 1);
+  }
+  .menu-open .nav { clip-path: circle(150% at calc(100% - 44px) 40px); }
+  .nav a {
+    font-family: var(--serif);
+    font-size: 48px;
+    letter-spacing: -.02em;
+    text-transform: none;
+    color: var(--paper);
+  }
+  .nav a.active { color: var(--laser); }
+
+  /* While menu is open: stop page scroll, and remove effects that would trap the menu inside the header */
+  body.menu-open { overflow: hidden; }
+  .menu-open .site-header { transform: none; backdrop-filter: none; -webkit-backdrop-filter: none; background: transparent; border-color: transparent; }
+  .menu-open .logo { color: var(--paper); position: relative; z-index: 70; }
+}
+
+/* =====================================================
+   10. ACCESSIBILITY: respect users who turn motion off
+   ===================================================== */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+  .reveal { opacity: 1; transform: none; }
+}
