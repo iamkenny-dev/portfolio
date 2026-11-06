@@ -13,6 +13,8 @@
     />
 
     <!-- Fonts: a serif for headlines, a sans for reading, a mono for labels -->
+        <link rel="icon"
+            href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='%23E8432E'/></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -217,12 +219,7 @@
           Let's build<br /><em>something.</em>
         </h2>
 
-        <!-- Replace YOUR_FORM_ID with the ID from your Formspree form -->
-        <form
-          class="contact-form reveal"
-          action="https://formspree.io/f/YOUR_FORM_ID"
-          method="POST"
-        >
+        <form class="contact-form reveal" action="/api/contact" method="POST">
           <div class="form-row">
             <div class="form-field">
               <label class="mono" for="contact-name">Name</label>
@@ -260,7 +257,7 @@
           <input
             class="form-trap"
             type="text"
-            name="_gotcha"
+            name="website"
             tabindex="-1"
             autocomplete="off"
             aria-hidden="true"

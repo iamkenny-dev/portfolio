@@ -169,7 +169,7 @@ document
   .forEach((el) => countObserver.observe(el));
 
 // ---------- 9. Contact form ----------
-// Sends the message to Formspree without leaving the page.
+// Sends the message to server.js without leaving the page.
 const contactForm = document.querySelector(".contact-form");
 const formStatus = contactForm.querySelector(".form-status");
 const formSubmit = contactForm.querySelector(".form-submit");
@@ -177,26 +177,25 @@ const formSubmit = contactForm.querySelector(".form-submit");
 contactForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  if (contactForm.action.includes("YOUR_FORM_ID")) {
-    formStatus.textContent = "This form isn't connected yet.";
-    return;
-  }
-
   formSubmit.disabled = true;
   formStatus.textContent = "Sending…";
 
   try {
     const response = await fetch(contactForm.action, {
       method: "POST",
-      body: new FormData(contactForm),
-      headers: { Accept: "application/json" },
+      body: JSON.stringify(Object.fromEntries(new FormData(contactForm))),
+      headers: { "Content-Type": "application/json" },
     });
-    if (!response.ok) throw new Error("Request failed");
+    const result = await response.json();
+    if (!response.ok) throw new Error(result.error);
 
     contactForm.reset();
     formStatus.textContent = "Message sent ✓";
-  } catch {
-    formStatus.textContent = "Something went wrong. Please try again.";
+  } catch (error) {
+    formStatus.textContent =
+      error instanceof TypeError || error instanceof SyntaxError || !error.message
+        ? "Something went wrong. Please try again."
+        : error.message;
   } finally {
     formSubmit.disabled = false;
   }
