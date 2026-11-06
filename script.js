@@ -169,7 +169,7 @@ document
   .forEach((el) => countObserver.observe(el));
 
 // ---------- 9. Contact form ----------
-// Sends the message to server.js without leaving the page.
+// Sends the message to Web3Forms without leaving the page.
 const contactForm = document.querySelector(".contact-form");
 const formStatus = contactForm.querySelector(".form-status");
 const formSubmit = contactForm.querySelector(".form-submit");
@@ -184,18 +184,18 @@ contactForm.addEventListener("submit", async (e) => {
     const response = await fetch(contactForm.action, {
       method: "POST",
       body: JSON.stringify(Object.fromEntries(new FormData(contactForm))),
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
     });
     const result = await response.json();
-    if (!response.ok) throw new Error(result.error);
+    if (!result.success) throw new Error(result.message);
 
     contactForm.reset();
     formStatus.textContent = "Message sent ✓";
-  } catch (error) {
-    formStatus.textContent =
-      error instanceof TypeError || error instanceof SyntaxError || !error.message
-        ? "Something went wrong. Please try again."
-        : error.message;
+  } catch {
+    formStatus.textContent = "Something went wrong. Please try again.";
   } finally {
     formSubmit.disabled = false;
   }
