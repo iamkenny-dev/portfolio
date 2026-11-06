@@ -168,21 +168,38 @@ document
   .querySelectorAll("[data-count]")
   .forEach((el) => countObserver.observe(el));
 
-// ---------- 9. Copy email to clipboard ----------
-const emailBtn = document.querySelector(".email-btn");
-const emailHint = emailBtn.querySelector(".email-hint");
+// ---------- 9. Contact form ----------
+// Sends the message to Formspree without leaving the page.
+const contactForm = document.querySelector(".contact-form");
+const formStatus = contactForm.querySelector(".form-status");
+const formSubmit = contactForm.querySelector(".form-submit");
 
-emailBtn.addEventListener("click", () => {
-  const email = emailBtn.dataset.email;
-  navigator.clipboard
-    .writeText(email)
-    .then(() => {
-      emailHint.textContent = "Copied ✓";
-      setTimeout(() => (emailHint.textContent = "Click to copy"), 2000);
-    })
-    .catch(() => {
-      window.location.href = "mailto:" + email; // fallback: open email app
+contactForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  if (contactForm.action.includes("YOUR_FORM_ID")) {
+    formStatus.textContent = "This form isn't connected yet.";
+    return;
+  }
+
+  formSubmit.disabled = true;
+  formStatus.textContent = "Sending…";
+
+  try {
+    const response = await fetch(contactForm.action, {
+      method: "POST",
+      body: new FormData(contactForm),
+      headers: { Accept: "application/json" },
     });
+    if (!response.ok) throw new Error("Request failed");
+
+    contactForm.reset();
+    formStatus.textContent = "Message sent ✓";
+  } catch {
+    formStatus.textContent = "Something went wrong. Please try again.";
+  } finally {
+    formSubmit.disabled = false;
+  }
 });
 
 // ---------- 10. Magnetic button (desktop mice only) ----------

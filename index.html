@@ -86,15 +86,15 @@
 
         <div class="about-grid">
           <h2 class="big reveal">
-            A solutions engineer who got curious about <em>how it's built</em> — and
-            started building.
+            A solutions engineer who turns business needs into deployed technology  <em> — from requirements to demos </em> — and
+            to improved operations.
           </h2>
 
           <div class="about-text">
             <p class="reveal" style="--d: 0.1s">
               I'm a Sales &amp; Solutions Engineer, Software Developer, AI and
               Technology Consultant with expertise in building solutions and
-              software that optimize business operations in many industries. My
+              software that optimizes business operations in many industries. My
               day job is understanding how businesses work and showing them what
               technology — including AI — can do for them.
             </p>
@@ -106,7 +106,7 @@
 
             <ul class="stats reveal" style="--d: 0.3s">
               <li>
-                <strong data-count="2">0</strong><span>Regions covered</span>
+                <strong data-count="2">0</strong><span>Global</span>
               </li>
               <li>
                 <strong data-count="2">0</strong><span>Projects shipped</span>
@@ -214,13 +214,58 @@
           Let's build<br /><em>something.</em>
         </h2>
 
-        <button
-          class="email-btn magnetic reveal"
-          data-email="hello@example.com"
+        <!-- Replace YOUR_FORM_ID with the ID from your Formspree form -->
+        <form
+          class="contact-form reveal"
+          action="https://formspree.io/f/YOUR_FORM_ID"
+          method="POST"
         >
-          <span class="email-label">hello@example.com</span>
-          <span class="email-hint">Click to copy</span>
-        </button>
+          <div class="form-row">
+            <div class="form-field">
+              <label class="mono" for="contact-name">Name</label>
+              <input
+                id="contact-name"
+                name="name"
+                type="text"
+                autocomplete="name"
+                required
+              />
+            </div>
+            <div class="form-field">
+              <label class="mono" for="contact-email">Email</label>
+              <input
+                id="contact-email"
+                name="email"
+                type="email"
+                autocomplete="email"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label class="mono" for="contact-message">Message</label>
+            <textarea
+              id="contact-message"
+              name="message"
+              rows="5"
+              required
+            ></textarea>
+          </div>
+
+          <!-- Hidden from people; bots that fill it in get filtered as spam -->
+          <input
+            class="form-trap"
+            type="text"
+            name="_gotcha"
+            tabindex="-1"
+            autocomplete="off"
+            aria-hidden="true"
+          />
+
+          <button class="form-submit magnetic" type="submit">Send message</button>
+          <p class="form-status mono" role="status"></p>
+        </form>
 
         <ul class="socials mono reveal">
           <li>
@@ -231,7 +276,7 @@
               >GitHub ↗</a
             >
           </li>
-          <li><a href="#" target="_blank" rel="noopener">LinkedIn ↗</a></li>
+          <li><a href="https://www.linkedin.com/in/adelakunkehinde/" target="_blank" rel="noopener">LinkedIn ↗</a></li>
         </ul>
       </section>
     </main>

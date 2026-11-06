@@ -384,24 +384,56 @@ a.project:hover .arrow { transform: rotate(45deg); color: var(--laser); }
 }
 .contact-title em { color: var(--laser); }
 
-.email-btn {
-  display: inline-flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 4px;
+.contact-form {
+  display: grid;
+  gap: 28px;
+  max-width: 720px;
   margin-top: 56px;
-  padding: 22px 36px;
+}
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 28px;
+}
+.form-field { display: grid; gap: 8px; }
+.form-field label { font-size: 11px; letter-spacing: .15em; text-transform: uppercase; opacity: .6; }
+.form-field input,
+.form-field textarea {
+  width: 100%;
+  padding: 10px 0;
+  border: 0;
+  border-bottom: 1px solid #555;
+  border-radius: 0;
+  outline: 0;
+  background: none;
+  color: inherit;
+  font-family: var(--sans);
+  font-size: 17px;
+  transition: border-color .3s;
+}
+.form-field textarea { resize: vertical; }
+.form-field input:focus,
+.form-field textarea:focus { border-color: var(--laser); }
+
+/* Off-screen rather than display:none, so spam bots still fill it in */
+.form-trap { position: absolute; left: -9999px; }
+
+.form-submit {
+  justify-self: start;
+  padding: 18px 36px;
   border: 1px solid var(--paper);
   border-radius: 999px;
   background: none;
   color: inherit;
   cursor: pointer;
   font-family: var(--mono);
+  font-size: clamp(15px, 2vw, 20px);
   transition: background .3s, border-color .3s, transform .3s var(--ease);
 }
-.email-btn:hover { background: var(--laser); border-color: var(--laser); }
-.email-label { font-size: clamp(15px, 2vw, 20px); }
-.email-hint { font-size: 10px; letter-spacing: .15em; text-transform: uppercase; opacity: .6; }
+.form-submit:hover,
+.form-submit:focus-visible { background: var(--laser); border-color: var(--laser); }
+.form-submit:disabled { cursor: wait; opacity: .6; }
+.form-status { min-height: 1.6em; font-size: 13px; }
 
 .socials { display: flex; gap: 32px; margin-top: 64px; }
 .socials a { border-bottom: 1px solid transparent; transition: border-color .3s, color .3s; }
