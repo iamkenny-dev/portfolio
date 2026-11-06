@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: portfolio
+    runtime: node
+    # Render's free plan blocks the ports Gmail needs, so the form can't send there.
+    plan: 0.5c-512mb
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /
+    envVars:
+      - key: NODE_VERSION
+        value: "24"
+      - key: TRUST_PROXY
+        value: "1"
+      # Render asks for these when the Blueprint is first created.
+      - key: GMAIL_USER
+        sync: false
+      - key: GMAIL_APP_PASSWORD
+        sync: false
+      - key: CONTACT_TO
+        sync: false

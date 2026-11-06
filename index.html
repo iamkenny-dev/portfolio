@@ -13,6 +13,8 @@
     />
 
     <!-- Fonts: a serif for headlines, a sans for reading, a mono for labels -->
+        <link rel="icon"
+            href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='%23E8432E'/></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -217,12 +219,20 @@
           Let's build<br /><em>something.</em>
         </h2>
 
-        <!-- Replace YOUR_FORM_ID with the ID from your Formspree form -->
         <form
           class="contact-form reveal"
-          action="https://formspree.io/f/YOUR_FORM_ID"
+          action="https://api.web3forms.com/submit"
           method="POST"
         >
+          <!-- Web3Forms keys are public by design: this one only submits to your inbox -->
+          <input
+            type="hidden"
+            name="access_key"
+            value="443f0846-f3b6-4e1b-8afd-fd6c532c0f37"
+          />
+          <input type="hidden" name="subject" value="New portfolio message" />
+          <input type="hidden" name="from_name" value="Portfolio contact form" />
+
           <div class="form-row">
             <div class="form-field">
               <label class="mono" for="contact-name">Name</label>
@@ -259,8 +269,8 @@
           <!-- Hidden from people; bots that fill it in get filtered as spam -->
           <input
             class="form-trap"
-            type="text"
-            name="_gotcha"
+            type="checkbox"
+            name="botcheck"
             tabindex="-1"
             autocomplete="off"
             aria-hidden="true"
