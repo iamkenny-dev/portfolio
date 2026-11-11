@@ -13,6 +13,8 @@
     />
 
     <!-- Fonts: a serif for headlines, a sans for reading, a mono for labels -->
+        <link rel="icon"
+            href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='%23E8432E'/></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -157,7 +159,7 @@
 
       <!-- ============ PROJECTS ============ -->
       <section id="projects" class="section">
-        <p class="section-num mono">03 / Selected projects</p>
+        <p class="section-num mono">04 / Selected projects</p>
 
         <div class="projects">
           <a
@@ -185,7 +187,7 @@
               <span>02</span><span class="arrow">↗</span>
             </div>
             <div class="project-visual mono">
-              <span>Day <b>01</b>/60</span>
+              <span>Day <b>02</b>/60</span>
             </div>
             <h3>This Portfolio</h3>
             <p>
@@ -198,20 +200,20 @@
             </ul>
           </a>
 
-          <a class="project reveal" href="https://github.com/iamkenny-dev/shortly" target="_blank" rel="noopener">
+        <a class="project reveal" href="https://github.com/iamkenny-dev/todo" target="_blank" rel="noopener">
             <div class="project-top mono">
-              <span>03</span><span class="arrow">↗</span>
+                <span>03</span><span class="arrow">↗</span>
             </div>
             <div class="project-visual mono">
-              <span>to.do/<b>x7Ka</b></span>
+                <span><to class="do">.to.do</to>/<b>x7Ka</b></span>
             </div>
-            <h3>To-Do App</h3>
-            <p>A simple to-do list app with local storage.</p>
+            <h3>Todoapp</h3>
+            <p>A simple todo app built with modern web technologies.</p>
             <ul class="tags mono">
-              <li>Node.js</li>
-              <li>Express</li>
+                <li>Node.js</li>
+                <li>Express</li>
             </ul>
-          </a>
+        </a>
 
           <div class="project ghost reveal" style="--d: 0.2s">
             <div class="project-top mono"><span>04—60</span><span>…</span></div>
@@ -232,12 +234,20 @@
           Let's build<br /><em>something.</em>
         </h2>
 
-        <!-- Replace YOUR_FORM_ID with the ID from your Formspree form -->
         <form
           class="contact-form reveal"
-          action="https://formspree.io/f/YOUR_FORM_ID"
+          action="https://api.web3forms.com/submit"
           method="POST"
         >
+          <!-- Web3Forms keys are public by design: this one only submits to your inbox -->
+          <input
+            type="hidden"
+            name="access_key"
+            value="443f0846-f3b6-4e1b-8afd-fd6c532c0f37"
+          />
+          <input type="hidden" name="subject" value="New portfolio message" />
+          <input type="hidden" name="from_name" value="Portfolio contact form" />
+
           <div class="form-row">
             <div class="form-field">
               <label class="mono" for="contact-name">Name</label>
@@ -274,8 +284,8 @@
           <!-- Hidden from people; bots that fill it in get filtered as spam -->
           <input
             class="form-trap"
-            type="text"
-            name="_gotcha"
+            type="checkbox"
+            name="botcheck"
             tabindex="-1"
             autocomplete="off"
             aria-hidden="true"
